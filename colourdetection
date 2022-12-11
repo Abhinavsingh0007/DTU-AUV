@@ -1,0 +1,34 @@
+#include <opencv2/highgui.hpp>
+#include<opencv2/imgcodecs.hpp>
+#include<opencv2/imgproc.hpp>
+#include <iostream>
+using namespace std;
+using namespace cv;
+int main()
+{ 
+Mat imgHSV,mask;
+int hmin=38,smin=0,vmin=146;
+int hmax=72,smax=174,vmax=195;
+ string path="sample.jpeg";
+ Mat img = imread(path);
+cvtColor(img,imgHSV,COLOR_BGR2HSV);
+namedWindow("Slider",(250,640));
+createTrackbar("Hue Min","Slider",&hmin,179);
+createTrackbar("Hue Max","Slider",&hmax,179);
+createTrackbar("Sat Min","Slider",&smin,255);
+createTrackbar("Sat Max","Slider",&smax,255);
+createTrackbar("Val Min","Slider",&vmin,255);
+createTrackbar("Val Max","Slider",&vmax,255);
+while(true)
+{
+Scalar lower(hmin,smin,vmin);
+Scalar upper(hmax,smax,vmax);
+ inRange(imgHSV,lower,upper,mask);
+ imshow("Image",img);
+ imshow("Image hsv",imgHSV);
+ imshow("Image mask",mask);
+ waitKey(0);
+ waitKey(1);
+}
+ return 0;
+}
